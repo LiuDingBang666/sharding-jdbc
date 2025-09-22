@@ -1,0 +1,163 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: sharding-jdbc-demo-test
+
+  # ShardingSphere配置 - 测试环境
+  shardingsphere:
+    datasource:
+      # 数据源列表
+      names: ds0,ds1
+      
+      # 第一个数据源
+      ds0:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding_db0?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: root
+        
+      # 第二个数据源
+      ds1:
+        type: com.alibaba.druid.pool.DruidDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://localhost:3306/sharding_db1?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+        username: root
+        password: root
+    
+    # 分片规则配置
+    rules:
+      sharding:
+        # 分库策略
+        default-database-strategy:
+          standard:
+            sharding-column: user_id
+            sharding-algorithm-name: database-inline
+            
+        # 分表策略
+        default-table-strategy:
+          standard:
+            sharding-column: id
+            sharding-algorithm-name: table-inline
+            
+        # 表分片规则
+        tables:
+          # 用户表分片规则
+          t_user:
+            actual-data-nodes: ds$->{0..1}.t_user_$->{0..1}
+            table-strategy:
+              standard:
+                sharding-column: id
+                sharding-algorithm-name: user-table-inline
+                
+          # 订单表分片规则
+          t_order:
+            actual-data-nodes: ds$->{0..1}.t_order_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: database-inline
+            table-strategy:
+              standard:
+                sharding-column: order_id
+                sharding-algorithm-name: order-table-inline
+                
+          # 订单项表分片规则
+          t_order_item:
+            actual-data-nodes: ds$->{0..1}.t_order_item_$->{0..1}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: database-inline
+            table-strategy:
+              standard:
+                sharding-column: order_id
+                sharding-algorithm-name: order-table-inline
+                
+          # 用户日志表按月分表规则
+          user_log:
+            actual-data-nodes: ds$->{0..1}.user_log_$->{202401..202503}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: database-inline
+            table-strategy:
+              standard:
+                sharding-column: create_time
+                sharding-algorithm-name: user-log-monthly
+                
+          # 交易记录表按月分表规则
+          transaction:
+            actual-data-nodes: ds$->{0..1}.transaction_$->{202401..202503}
+            database-strategy:
+              standard:
+                sharding-column: user_id
+                sharding-algorithm-name: database-inline
+            table-strategy:
+              standard:
+                sharding-column: create_time
+                sharding-algorithm-name: transaction-monthly
+        
+        # 绑定表配置
+        binding-tables:
+          - t_order,t_order_item
+        
+        # 广播表配置
+        broadcast-tables:
+          - t_config
+        
+        # 分片算法配置
+        sharding-algorithms:
+          # 数据库分片算法
+          database-inline:
+            type: INLINE
+            props:
+              algorithm-expression: ds$->{user_id % 2}
+              
+          # 用户表分片算法
+          user-table-inline:
+            type: INLINE
+            props:
+              algorithm-expression: t_user_$->{id % 2}
+              
+          # 订单表分片算法
+          order-table-inline:
+            type: INLINE
+            props:
+              algorithm-expression: t_order_$->{order_id % 2}
+              
+          # 用户日志月分表算法
+          user-log-monthly:
+            type: INLINE
+            props:
+              algorithm-expression: user_log_$->{create_time.format("yyyyMM")}
+              
+          # 交易记录月分表算法
+          transaction-monthly:
+            type: INLINE
+            props:
+              algorithm-expression: transaction_$->{create_time.format("yyyyMM")}
+    
+    # 属性配置
+    props:
+      sql-show: false  # 测试环境关闭SQL日志
+
+# MyBatis Plus配置
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      
+# 日志配置
+logging:
+  level:
+    com.example.shardingjdbc.mapper: warn
+    org.apache.shardingsphere: warn
+    org.springframework: warn
