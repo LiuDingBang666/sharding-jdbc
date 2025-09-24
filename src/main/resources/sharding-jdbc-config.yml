@@ -42,7 +42,6 @@ rules:
     loadBalancers:
       random:
         type: RANDOM
-  # 分布式事务
   # 广播表
   - !BROADCAST
     tables:
@@ -107,6 +106,9 @@ rules:
       # 读写分离
 
       # 分布式事务
+# 分布式事务
+transaction:
+  defaultType: LOCAL
 
 props:
   sql-show: true
