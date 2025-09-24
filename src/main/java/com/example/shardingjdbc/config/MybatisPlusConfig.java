@@ -6,14 +6,15 @@ import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerIntercept
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import java.time.LocalDateTime;
 
 /**
  * MyBatis Plus 配置类
+ * 解决 ShardingSphere 与 MyBatis Plus 集成问题
  */
 @Configuration
 public class MybatisPlusConfig {
+    // 使用 MyBatis Plus 与 ShardingSphere 自动装配的 SqlSessionFactory/SqlSessionTemplate
 
     /**
      * 分页插件配置
@@ -21,7 +22,6 @@ public class MybatisPlusConfig {
     @Bean
     public MybatisPlusInterceptor mybatisPlusInterceptor() {
         MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
-        // 添加分页插件
         interceptor.addInnerInterceptor(new PaginationInnerInterceptor());
         return interceptor;
     }
@@ -34,14 +34,11 @@ public class MybatisPlusConfig {
         return new MetaObjectHandler() {
             @Override
             public void insertFill(MetaObject metaObject) {
-                // 插入时自动填充创建时间和更新时间
                 this.strictInsertFill(metaObject, "createTime", LocalDateTime.class, LocalDateTime.now());
                 this.strictInsertFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
             }
-
             @Override
             public void updateFill(MetaObject metaObject) {
-                // 更新时自动填充更新时间
                 this.strictUpdateFill(metaObject, "updateTime", LocalDateTime.class, LocalDateTime.now());
             }
         };

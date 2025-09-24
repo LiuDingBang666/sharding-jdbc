@@ -1,6 +1,5 @@
 package com.example.shardingjdbc;
 
-import org.apache.shardingsphere.spring.boot.ShardingSphereAutoConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -8,11 +7,10 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Spring Boot 应用启动类
- * 整合 MyBatis Plus 和 Sharding JDBC
+ * 恢复默认数据源及 ShardingSphere 自动装配
  */
-@SpringBootApplication(exclude = {ShardingSphereAutoConfiguration.class})
+@SpringBootApplication
 @MapperScan("com.example.shardingjdbc.mapper")
-@EnableTransactionManagement
 public class ShardingJdbcApplication {
 
     public static void main(String[] args) {
