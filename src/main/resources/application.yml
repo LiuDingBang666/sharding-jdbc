@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  mvc:
+    contentnegotiation:
+      default-content-types: application/json
   application:
     name: sharding-jdbc-demo
   datasource:
@@ -31,7 +34,6 @@ mybatis-plus:
 # 日志配置
 logging:
   level:
-    com.example.shardingjdbc.mapper: debug
     org.apache.shardingsphere: info
     root: info
   pattern:

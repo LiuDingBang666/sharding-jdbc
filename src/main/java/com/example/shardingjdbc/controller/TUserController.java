@@ -8,13 +8,15 @@ import com.example.shardingjdbc.entity.TUser;
 import com.example.shardingjdbc.service.TUserService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.*;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
 @Validated
 public class TUserController {
 
@@ -26,7 +28,7 @@ public class TUserController {
 
     /** 创建用户 */
     @PostMapping
-    public TUser create(@Valid @RequestBody UserCreateReq req) {
+    public TUser create(@Valid @RequestBody TUser req) {
         TUser user = new TUser();
         user.setUsername(req.getUsername());
         user.setEmail(req.getEmail());
@@ -64,7 +66,7 @@ public class TUserController {
 
     /** 更新用户（部分字段） */
     @PutMapping("/{id}")
-    public TUser update(@PathVariable @Min(1) Long id, @Valid @RequestBody UserUpdateReq req) {
+    public TUser update(@PathVariable @Min(1) Long id, @Valid @RequestBody TUser req) {
         TUser exist = userService.getById(id);
         if (exist == null) {
             throw new IllegalArgumentException("用户不存在");
