@@ -85,6 +85,13 @@ ALTER TABLE user_log_202502 COMMENT='用户日志表_2025年02月';
 CREATE TABLE IF NOT EXISTS user_log_202503 LIKE user_log_202401;
 ALTER TABLE user_log_202503 COMMENT='用户日志表_2025年03月';
 
+CREATE TABLE user_log_202504 LIKE user_log_202503;
+CREATE TABLE user_log_202505 LIKE user_log_202503;
+CREATE TABLE user_log_202506 LIKE user_log_202503;
+CREATE TABLE user_log_202507 LIKE user_log_202503;
+CREATE TABLE user_log_202508 LIKE user_log_202503;
+CREATE TABLE user_log_202509 LIKE user_log_202503;
+
 -- 插入测试数据
 INSERT INTO user_log_202401 (log_id, user_id, action_type, action_description, ip_address, user_agent, request_url, request_method, request_params, response_status, execution_time, create_time)
 VALUES 

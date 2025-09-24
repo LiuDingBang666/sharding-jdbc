@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * Spring Boot 应用启动类
- * 恢复默认数据源及 ShardingSphere 自动装配
+ * 整合 MyBatis Plus 和 Sharding JDBC
  */
 @SpringBootApplication
 @MapperScan("com.example.shardingjdbc.mapper")
