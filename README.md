@@ -1,28 +1,13 @@
 # Sharding-JDBC Demo
 
-## t_user CRUD APIs
+## 主要演示功能
 
-Base URL: http://localhost:8080
-
-- POST /users
-  - Create user
-  - Body (JSON):
-    {
-      "username": "alice",
-      "email": "alice@example.com",
-      "age": 28,
-      "gender": 1,
-      "status": 1
-    }
-- GET /users/{id}
-  - Get user by id
-- GET /users?page=1&size=10&username=ali
-  - Page list with optional fuzzy username filter
-- PUT /users/{id}
-  - Partial update
-  - Body (JSON): any subset of fields from create request
-- DELETE /users/{id}
-  - Logical delete
+    取模分片-TUser
+    根据月份分片
+    复合分片
+    读写分离
+    分布式事务
+    广播表
 
 ## Build
 
@@ -57,4 +42,6 @@ cmd /c java -jar target\sharding-jdbc-1.0.0.jar
 - Uses MyBatis-Plus IdType.ASSIGN_ID (snowflake) so `id` can be omitted when creating users; sharding uses `id` for db/table routing.
 - Logical delete enabled via `deleted` field and MyBatis-Plus global config.
 - Jakarta Validation is enabled (`spring-boot-starter-validation`), invalid requests return 400 with details.
+
+
 

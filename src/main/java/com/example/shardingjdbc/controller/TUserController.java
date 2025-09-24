@@ -28,7 +28,7 @@ public class TUserController {
 
     /** 创建用户 */
     @PostMapping
-    public TUser create(@Valid @RequestBody TUser req) {
+    public TUser create(@Valid @RequestBody UserCreateReq req) {
         TUser user = new TUser();
         user.setUsername(req.getUsername());
         user.setEmail(req.getEmail());
@@ -66,7 +66,7 @@ public class TUserController {
 
     /** 更新用户（部分字段） */
     @PutMapping("/{id}")
-    public TUser update(@PathVariable @Min(1) Long id, @Valid @RequestBody TUser req) {
+    public TUser update(@PathVariable @Min(1) Long id, @Valid @RequestBody UserUpdateReq req) {
         TUser exist = userService.getById(id);
         if (exist == null) {
             throw new IllegalArgumentException("用户不存在");
