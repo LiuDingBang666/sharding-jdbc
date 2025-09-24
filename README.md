@@ -5,12 +5,12 @@
     取模分片-TUser
     根据月份分片-UserLog
     复合分片-TOrder
-    读写分离-
+    读写分离-TUserRole
+    广播表-TConfig
     分布式事务-
-    广播表-
 
 ## Build
-
+    
 - JDK 21
 - Maven 3.9+
 

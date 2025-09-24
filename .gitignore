@@ -24,3 +24,5 @@ tmp/
 
 # Generated
 hs_err_pid*
+/mysql/master/data/
+/mysql/slave/data/

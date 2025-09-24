@@ -12,9 +12,16 @@ dataSources:
     username: root
     password: root
 rules:
+  # 读写分离
+
+  # 分布式事务
+  # 广播表
+  - !BROADCAST
+    tables:
+      - t_config
   - !SHARDING
     tables:
-      #      取模分片
+      # 取模分片，库取模，表取模
       t_user:
         actualDataNodes: ds${0..1}.t_user_${0..1}
         tableStrategy:
@@ -25,7 +32,7 @@ rules:
           standard:
             shardingColumn: id
             shardingAlgorithmName: db_inline
-      # 按月分片
+      # 按月分片 库取模，表按月
       t_user_log:
         actualDataNodes: ds${0..1}.user_log_${202401..202509}
         tableStrategy:
@@ -38,9 +45,13 @@ rules:
             shardingColumn: id
             shardingAlgorithmName: db_inline
       # 复合分片
-      # 广播表
-      # 读写分离
-      # 分布式事务
+      t_user_role:
+        # 根据用户id和角色编码来进行复合分片
+        actualDataNodes: ds0.t_user_role_${0..1}_${1..4}
+        tableStrategy:
+          complex:
+            shardingColumns: user_id,role_code
+            shardingAlgorithmName: user_role_complex
     shardingAlgorithms:
       # 取模分片
       db_inline:
@@ -57,6 +68,17 @@ rules:
         props:
           strategy: STANDARD
           algorithmClassName: com.example.shardingjdbc.algorithm.MonthTableShardingAlgorithm
+      # 复合分片
+      user_role_complex:
+        type: CLASS_BASED
+        props:
+          strategy: COMPLEX
+          algorithmClassName: com.example.shardingjdbc.algorithm.UserRoleComplexShardingAlgorithm
+      # 广播表
+
+      # 读写分离
+
+      # 分布式事务
 
 props:
   sql-show: true
