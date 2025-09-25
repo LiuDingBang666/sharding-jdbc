@@ -101,16 +101,11 @@ rules:
         props:
           strategy: COMPLEX
           algorithmClassName: com.example.shardingjdbc.algorithm.UserRoleComplexShardingAlgorithm
-      # 广播表
-
-      # 读写分离
-
-      # 分布式事务
 # 分布式事务
 # ShardingSphere 对外提供 begin/commit/rollback 传统事务接口，通过 LOCAL，XA，BASE 三种模式提供了分布式事务的能力，
 transaction:
   defaultType: XA
   providerType: Narayana
-
+# 日志是否显示
 props:
   sql-show: true
