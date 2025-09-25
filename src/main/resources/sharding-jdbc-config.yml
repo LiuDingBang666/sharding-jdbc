@@ -107,8 +107,10 @@ rules:
 
       # 分布式事务
 # 分布式事务
+# ShardingSphere 对外提供 begin/commit/rollback 传统事务接口，通过 LOCAL，XA，BASE 三种模式提供了分布式事务的能力，
 transaction:
-  defaultType: LOCAL
+  defaultType: XA
+  providerType: Narayana
 
 props:
   sql-show: true

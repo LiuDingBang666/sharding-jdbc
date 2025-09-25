@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  */
 @SpringBootApplication
 @MapperScan("com.example.shardingjdbc.mapper")
+@EnableTransactionManagement
 public class ShardingJdbcApplication {
 
     public static void main(String[] args) {

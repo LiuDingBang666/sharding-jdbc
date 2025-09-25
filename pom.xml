@@ -110,6 +110,13 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!-- 选用 Atomikos 作为 JTA -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-transaction-xa-atomikos</artifactId>
+            <version>${sharding-sphere.version}</version>
+        </dependency>
     </dependencies>
 
     <build>
