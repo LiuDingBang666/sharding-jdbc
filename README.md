@@ -7,7 +7,7 @@
     复合分片-TUserRole
     广播表-TConfig
     读写分离-全表，环境搭建见mysql，需要docker及docker compose环境
-    分布式事务-
+    分布式事务-使用XA内置Narayana，直接引入依赖即可
 
 ## Build
     
